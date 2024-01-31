@@ -12,7 +12,7 @@ export class AuthController {
 
   constructor(
     private authService: AuthService
-  ) {}
+  ) {} 
 
   @Post('/registration')
   async registrate(

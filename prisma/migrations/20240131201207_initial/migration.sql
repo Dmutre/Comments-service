@@ -14,8 +14,8 @@ CREATE TABLE "Comment" (
     "id" SERIAL NOT NULL,
     "text" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
-    "parentId" INTEGER NOT NULL,
-    "filepath" TEXT NOT NULL,
+    "parentId" INTEGER,
+    "filepath" TEXT,
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
@@ -27,4 +27,4 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Comment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Comment"("id") ON DELETE SET NULL ON UPDATE CASCADE;

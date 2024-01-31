@@ -25,8 +25,8 @@ model Comment {
   text      String
   userId    Int
   user      User      @relation(fields: [userId], references: [id])
-  parentId  Int
+  parentId  Int?
   parent    Comment?  @relation("CommentToComment", fields: [parentId], references: [id])
   children  Comment[] @relation("CommentToComment")
-  filepath  String
+  filepath  String?
 }
