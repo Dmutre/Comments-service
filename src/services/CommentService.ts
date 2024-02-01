@@ -71,7 +71,6 @@ export class CommentService {
   
   async getComments(data: GetCommentsDTO): Promise<any> {
     const filters = this.commentMapper.getCommentQuery(data);
-    console.log(filters.orderBy)
     const comments = await this.getCommentsRecursive(null, filters);
     return comments;
   }

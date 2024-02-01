@@ -1,11 +1,11 @@
 import { Transform } from "class-transformer";
-import { IsNumber, IsOptional, IsString } from "class-validator";
-import { IsValidHTML } from "src/utils/CommentTextValidator";
+import { IsNumber, IsOptional, IsString, Validate } from "class-validator";
+import { HtmlTagValidator  } from "src/utils/CommentTextValidator";
 import { validationOptionsMsg } from "src/utils/ValidationMessage";
 
 export class createCommentDTO {
   @IsString()
-  //@IsValidHTML(validationOptionsMsg('Invalid tag text format'))
+  //@Validate(HtmlTagValidator)
   text: string;
 
   @Transform(({ value }) => Number(value))
