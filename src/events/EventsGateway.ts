@@ -15,4 +15,8 @@ export class EventsGateway {
   @WebSocketServer()
   server: Server;
 
+  @SubscribeMessage('newComment')
+  newCommentHandler(@MessageBody() comment: any) {
+    this.server.emit('newComment', comment);
+  }
 }

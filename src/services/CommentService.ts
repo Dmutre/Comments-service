@@ -5,6 +5,7 @@ import { createCommentDTO } from "src/dtos/CreateCommentDTO";
 import { FileService } from "./FileService";
 import { GetCommentsDTO } from "src/dtos/GetCommentsDTO";
 import { CommentMapper } from "src/utils/dataMapper/CommentsMapper";
+import { EventsGateway } from "src/events/EventsGateway";
 
 @Injectable()
 export class CommentService {
@@ -12,6 +13,7 @@ export class CommentService {
     private prisma: PrismaService,
     private fileService: FileService,
     private commentMapper: CommentMapper,
+    private eventsGateway: EventsGateway,
   ) {}
 
   async createComment(data: createCommentDTO, user: User, file: Express.Multer.File) {
@@ -25,17 +27,15 @@ export class CommentService {
       },
     });
 
+    this.eventsGateway.newCommentHandler(comment);
     return comment;
   }
 
-  async getCommentsRecursive(parentId: number | null, limits: any): Promise<any[]> {
+  async getCommentsRecursive(parentId: number | null, filters: any): Promise<any[]> {
     const comments = await this.prisma.comment.findMany({
-      ...limits,
+      ...filters,
       where: {
         parentId,
-      },
-      orderBy: {
-        createdAt: 'asc',
       },
       include: {
         children: {
@@ -53,7 +53,7 @@ export class CommentService {
             username: true,
             avatar: true,
           }
-        }
+        },
       },
     });
   
@@ -70,8 +70,9 @@ export class CommentService {
   }
   
   async getComments(data: GetCommentsDTO): Promise<any> {
-    const limits = this.commentMapper.getCommentQuery(data);
-    const comments = await this.getCommentsRecursive(null, limits);
+    const filters = this.commentMapper.getCommentQuery(data);
+    console.log(filters.orderBy)
+    const comments = await this.getCommentsRecursive(null, filters);
     return comments;
   }
   

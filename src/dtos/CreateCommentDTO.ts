@@ -1,4 +1,4 @@
-import { Type } from "class-transformer";
+import { Transform } from "class-transformer";
 import { IsNumber, IsOptional, IsString } from "class-validator";
 import { IsValidHTML } from "src/utils/CommentTextValidator";
 import { validationOptionsMsg } from "src/utils/ValidationMessage";
@@ -8,7 +8,7 @@ export class createCommentDTO {
   //@IsValidHTML(validationOptionsMsg('Invalid tag text format'))
   text: string;
 
-  @Type(() => Number)
+  @Transform(({ value }) => Number(value))
   @IsNumber()
   @IsOptional()
   parentId?: number;

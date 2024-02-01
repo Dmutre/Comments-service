@@ -1,14 +1,22 @@
-import { Type } from "class-transformer";
-import { IsNumber, IsOptional } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsIn, IsNumber, IsOptional } from "class-validator";
 
 export class GetCommentsDTO {
-  @Type(() => Number)
   @IsNumber()
+  @Transform(({ value }) => Number(value))
   @IsOptional()
   limit?: number;
 
-  @Type(() => Number)
   @IsNumber()
+  @Transform(({ value }) => Number(value))
   @IsOptional()
   page?: number;
+
+  @IsIn(['email', 'username', 'createdAt'])
+  @IsOptional()
+  order?: string;
+
+  @IsIn(['asc', 'desc'])
+  @IsOptional()
+  rule?: string;
 }
