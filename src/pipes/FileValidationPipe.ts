@@ -9,7 +9,6 @@ export class FileValidationPipe implements PipeTransform {
   maxImageHeight: number = 240;
 
   async transform(value: Express.Multer.File, metadata: ArgumentMetadata) {
-    console.log(value);
     if(!value) return null;
 
     const {mimetype, size, buffer } = value;
@@ -24,7 +23,7 @@ export class FileValidationPipe implements PipeTransform {
       const { width, height } = image.bitmap;
 
       if (width > this.maxImageWidth || height > this.maxImageHeight) {
-        image.scaleToFit(this.maxImageWidth, this.maxImageHeight); // зменшуємо зображення пропорційно
+        image.scaleToFit(this.maxImageWidth, this.maxImageHeight);
         const resizedImageBuffer = await image.getBufferAsync(mimetype);
 
         return {

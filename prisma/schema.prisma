@@ -16,8 +16,11 @@ model User {
   email     String  @unique
   password  String
   avatar    String?
+  createdAt DateTime?            @default(now()) @map("created_at")
 
   comments  Comment[]
+
+  @@map("users")
 }
 
 model Comment {
@@ -29,4 +32,7 @@ model Comment {
   parent    Comment?  @relation("CommentToComment", fields: [parentId], references: [id])
   children  Comment[] @relation("CommentToComment")
   filepath  String?
+  createdAt DateTime? @default(now()) @map("created_at")
+
+  @@map("comments")
 }
