@@ -7,11 +7,12 @@ import { LocalAuthGuard } from "src/security/LocalAuthGuard";
 import { LocalStrategy } from "src/security/LocalStrategy";
 import { AuthService } from "src/services/AuthService";
 import { PrismaModule } from "./PrismaModule";
+import { FileService } from "src/services/FileService";
 
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, LocalAuthGuard, JwtGuard, JwtStrategy, LocalStrategy],
+  providers: [AuthService, LocalAuthGuard, JwtGuard, JwtStrategy, LocalStrategy, FileService],
   imports: [JwtModule.register({
     global: true,
     secret: process.env.SECRET,

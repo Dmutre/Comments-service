@@ -6,6 +6,7 @@ import { CreateUserDTO } from "src/dtos/CreateUserDTO";
 import { AlreadyRegisteredException } from "src/utils/exception/AlreadyRegisteredException";
 import { User } from "@prisma/client";
 import { JwtService } from "@nestjs/jwt";
+import { FileService } from "./FileService";
 
 
 @Injectable()
@@ -13,6 +14,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private fileService: FileService,
   ) {}
 
   async validateUser(username: string, email: string, password: string) {
@@ -42,16 +44,19 @@ export class AuthService {
     return bcrypt.compare(password, hash);
   }
 
-  async registrate(data: CreateUserDTO) {
+  async registrate(data: CreateUserDTO, file: Express.Multer.File) {
     if(await this.checkIfUserAlreadyRegistered(data.email)) {
       throw new AlreadyRegisteredException();
     }
 
     data.password = await this.hashPassword(data.password);
 
+    const avatar = await this.fileService.uploadFile(file);
+
     const user = await this.prisma.user.create({
       data: {
-        ...data
+        ...data,
+        avatar: avatar,
       }
     });
 
