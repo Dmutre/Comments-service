@@ -1,0 +1,22 @@
+version: '3'
+services:
+  postgresdb:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+
+  app:
+    depends_on:
+      - postgresdb
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports: 
+      - "5000:5000"
+    env_file:
+      - .env

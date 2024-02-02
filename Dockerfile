@@ -10,8 +10,8 @@ RUN npm install
 COPY . .
 
 RUN npm run build && \
-    mkdir static
+    mkdir static 
 
-EXPOSE 3001
+EXPOSE 5000
 
-CMD [ "npm", "start" ]
+CMD npx prisma migrate deploy && npm start
