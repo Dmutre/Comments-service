@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Request, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreateUserDTO } from "src/dtos/CreateUserDTO";
+import { AvatarValidationPipe } from "src/pipes/AvatarValidationPipe";
 import { JwtGuard } from "src/security/JwtGuard";
 import { LocalAuthGuard } from "src/security/LocalAuthGuard";
 import { AuthService } from "src/services/AuthService";
@@ -19,7 +20,7 @@ export class AuthController {
   @Post('/registration')
   async registrate(
     @Body() data: CreateUserDTO,
-    @UploadedFile() file: Express.Multer.File
+    @UploadedFile(new AvatarValidationPipe()) file: Express.Multer.File
   ) {
     return await this.authService.registrate(data, file);
   }
